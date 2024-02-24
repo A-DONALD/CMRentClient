@@ -52,7 +52,7 @@ function Home() {
                 <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
                     <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                            <img src="https://www.zarla.com/images/zarla-v-1x1-2400x2400-20211125-tfy9864vyvymh4ktbq3m.png?crop=1:1,smart&width=250&dpr=2" className="h-8" alt="CMRent Logo" />
+                            <img src={import.meta.env.VITE_LOGO_URL} className="h-8" alt="CMRent Logo" />
                             <span className="self-center hidden md:block text-2xl font-semibold whitespace-nowrap dark:text-white">CMRent</span>
                         </a>
                         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
