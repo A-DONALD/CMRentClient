@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react'
 import Home from "./pages/Home"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import ServerError from "./errors/500";
 import NotFound from "./errors/404";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
   { path: "/500", element: <ServerError /> },
   { path: "*", element: <NotFound /> }
 ])
