@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import axios from '../api/axios';
 import { EMAIL_REGEX, PWD_REGEX } from "../scripts/Validation";
+import { Tooltip } from "../components/Tooltip";
 
 const REGISTER_URL = '/register';
 
@@ -42,7 +43,7 @@ function Register() {
 
     return (
         <section className="bg-gray-50 dark:bg-gray-900">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
                 <a href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                     <img className="w-8 h-8 mr-2" src={import.meta.env.VITE_LOGO_URL} alt="logo" />
                     CMRent
@@ -56,21 +57,7 @@ function Register() {
                         <form className="space-y-4 md:space-y-6" action="#">
                             <div>
                                 <label htmlFor="email" className="flex items-center mb-2">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                        className="h-5 w-5 cursor-pointer text-gray-900 dark:text-white mr-1"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-                                        />
-                                    </svg>
-                                    <span className="text-sm font-medium text-gray-900 dark:text-white mr-1">Your email</span>
+                                    <span className="text-sm font-medium text-gray-900 dark:text-white mr-1">Your Email</span>
                                     <span className={`text-lg ${validMail ? "text-green-600" : "text-red-600"}`}>•</span>
                                 </label>
                                 <input
@@ -91,20 +78,30 @@ function Register() {
                             </div>
                             <div>
                                 <label htmlFor="password" className="flex items-center mb-2">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                        className="h-5 w-5 cursor-pointer text-gray-900 dark:text-white mr-1"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-                                        />
-                                    </svg>
+                                    <Tooltip
+                                        position="top-right"
+                                        content={
+                                            <ul>The password must contain at least:
+                                                <li>• one capital letter</li>
+                                                <li>• one lower-case letter</li>
+                                                <li>• one digit</li>
+                                                <li>• one special charachter !@#$%</li>
+                                            </ul>}>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            strokeWidth={2}
+                                            className="h-5 w-5 cursor-pointer text-gray-900 dark:text-white mr-1"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                                            />
+                                        </svg>
+                                    </Tooltip>
                                     <span className="text-sm font-medium text-gray-900 dark:text-white mr-1">Password</span>
                                     <span className={`text-lg ${validPwd ? "text-green-600" : "text-red-600"}`}>•</span>
                                 </label>
@@ -124,20 +121,22 @@ function Register() {
                             </div>
                             <div>
                                 <label htmlFor="confirm-password" className="flex items-center mb-2">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                        className="h-5 w-5 cursor-pointer text-gray-900 dark:text-white mr-1"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-                                        />
-                                    </svg>
+                                    <Tooltip position="top-right" content="must match with the password">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            strokeWidth={2}
+                                            className="h-5 w-5 cursor-pointer text-gray-900 dark:text-white mr-1"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                                            />
+                                        </svg>
+                                    </Tooltip>
                                     <span className="text-sm font-medium text-gray-900 dark:text-white mr-1">Confirm Password</span>
                                     <span className={`text-lg ${validMatch ? "text-green-600" : "text-red-600"}`}>•</span>
                                 </label>

@@ -53,7 +53,7 @@ function App() {
   });
 
   return (
-    <div className="App bg-slate-100 dark:bg-gray-900">
+    <div className="App">
       <RouterProvider router={router} />
     </div>
   )
