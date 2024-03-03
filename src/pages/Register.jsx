@@ -3,7 +3,7 @@ import axios from '../api/axios';
 import { EMAIL_REGEX, PWD_REGEX } from "../scripts/Validation";
 import { Tooltip } from "../components/Tooltip";
 
-const REGISTER_URL = '/register';
+const REGISTER_URL = '/api/auth/signup';
 
 function Register() {
     const userRef = useRef();
@@ -47,10 +47,45 @@ function Register() {
         setErrMsg('');
     }, [user, pwd, matchPwd])
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // if button enabled with JS hack
+        const v1 = EMAIL_REGEX.test(user);
+        const v2 = PWD_REGEX.test(pwd);
+        if (!v1 || !v2) {
+            setErrMsg("Invalid Entry");
+            return;
+        }
+        try {
+            const response = await axios.post(REGISTER_URL,
+                JSON.stringify({ email: user, password: pwd }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+            // TODO: remove console.logs before deployment  
+            console.log(JSON.stringify(response?.data));
+            //console.log(JSON.stringify(response))
+            setSuccess(true);
+            //clear state and controlled inputs
+            setUser('');
+            setPwd('');
+            setMatchPwd('');
+        } catch (err) {
+            if (!err?.response || err.response?.status === 500) {
+                setErrMsg('No Server Response');
+            } else {
+                setErrMsg('Registration Failed')
+            }
+            errRef.current.focus();
+        }
+    }
+
     return (
         <section className="bg-gray-50 dark:bg-gray-900">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
-                <a href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                <a href="/" className="flex items-center mb-6 text-3xl font-semibold text-gray-900 dark:text-white">
                     <img className="w-8 h-8 mr-2" src={import.meta.env.VITE_LOGO_URL} alt="logo" />
                     CMRent
                 </a>
@@ -59,8 +94,8 @@ function Register() {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Create account
                         </h1>
-                        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                        <form className="space-y-4 md:space-y-6" action="#">
+                        <p ref={errRef} className={errMsg ? "block text-white w-full font-bold rounded-lg border-2 sm:text-sm text-md px-5 py-2 text-center bg-red-300 border-red-400 dark:border-red-800" : "hidden"} aria-live="assertive">{errMsg}</p>
+                        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                             <div>
                                 <label htmlFor="email" className="flex items-center mb-2">
                                     <span className="text-sm font-medium text-gray-900 dark:text-white mr-1">Your Email</span>
@@ -177,7 +212,7 @@ function Register() {
                                 </div>
                                 <div></div>
                             </div>
-                            <button type="submit" disabled={!validMail || !validPwd || !validMatch || !agree ? true : false} className="text-white w-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-blue-400 dark:bg-blue-600 disabled:bg-blue-100 dark:disabled:bg-blue-300">Create account</button>
+                            <button type="submit" disabled={!validMail || !validPwd || !validMatch || !agree ? true : false} className="text-white w-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-blue-600 hover:bg-blue-800 dark:hover:bg-blue-800 dark:bg-blue-600 disabled:bg-blue-300 dark:disabled:bg-blue-300">Create account</button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Already have an account? <a href="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
                             </p>
