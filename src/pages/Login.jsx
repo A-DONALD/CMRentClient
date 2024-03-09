@@ -1,10 +1,18 @@
 import { useRef, useState, useEffect } from "react";
 import axios from '../api/axios';
-import { EMAIL_REGEX, PWD_REGEX } from "../scripts/Validation";
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
+import { EMAIL_REGEX, PWD_REGEX } from "../scripts/Validation";
 const LOGIN_URL = '/api/auth/login';
 
 function Login() {
+    const { setAuth } = useAuth();
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/admin";
+
     const userRef = useRef();
     const errRef = useRef();
 
@@ -64,11 +72,16 @@ function Login() {
             );
             // TODO: remove console.logs before deployment  
             console.log(JSON.stringify(response?.data));
+            const accessToken = response?.data?.accessToken;
+            const roles = response?.data?.roles;
+            console.log(roles);
+            setAuth({ user, pwd, roles, accessToken });
             //console.log(JSON.stringify(response))
             setSuccess(true);
             //clear state and controlled inputs
             setUser('');
             setPwd('');
+            navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response || err.response?.status === 500) {
                 setErrMsg('No Server Response');

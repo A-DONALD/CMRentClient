@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
 import Home from "./pages/Home"
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import User from "./pages/User";
+import Editor from "./pages/Editor";
+import Admin from "./pages/Admin";
+import Board from "./pages/Board";
 import ServerError from "./errors/500";
 import NotFound from "./errors/404";
+import Unauthorized from "./errors/401";
+import RequireAuth from './components/RequireAuth';
 
-const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
-  { path: "/500", element: <ServerError /> },
-  { path: "*", element: <NotFound /> }
-])
+const ROLES = {
+  'User': 2001,
+  'Editor': 1984,
+  'Admin': 5150
+}
 
 function App() {
 
@@ -53,9 +58,32 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <RouterProvider router={router} />
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* public routes */}
+        <Route path="" element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
+        <Route path="board" element={<Board />} />
+
+        {/* we want to protect these routes */}
+        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+          <Route path="user" element={<User />} />
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
+          <Route path="editor" element={<Editor />} />
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+          <Route path="admin" element={<Admin />} />
+        </Route>
+
+        {/* catch all */}
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }
 

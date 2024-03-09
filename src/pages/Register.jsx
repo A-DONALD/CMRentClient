@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from '../api/axios';
 import { EMAIL_REGEX, PWD_REGEX } from "../scripts/Validation";
 import { Tooltip } from "../components/Tooltip";
@@ -6,6 +7,7 @@ import { Tooltip } from "../components/Tooltip";
 const REGISTER_URL = '/api/auth/signup';
 
 function Register() {
+    const naviguate = useNavigate();
     const userRef = useRef();
     const errRef = useRef();
 
@@ -72,6 +74,7 @@ function Register() {
             setUser('');
             setPwd('');
             setMatchPwd('');
+            navigate('/login');
         } catch (err) {
             if (!err?.response || err.response?.status === 500) {
                 setErrMsg('No Server Response');
