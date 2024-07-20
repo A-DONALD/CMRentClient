@@ -11,8 +11,6 @@ const ProtectedRoute = ({ roles, Component }) => {
     }
 
     const userRoles = user?.roles || {};
-    console.log(user?.roles)
-    console.log(roles)
 
     const hasRequiredRole = roles.some(role => userRoles.includes(role));
     if (!hasRequiredRole) {
