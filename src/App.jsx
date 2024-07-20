@@ -8,16 +8,10 @@ import User from "./pages/User";
 import Editor from "./pages/Editor";
 import Admin from "./pages/Admin";
 import Board from "./pages/Board";
-import ServerError from "./errors/500";
 import NotFound from "./errors/404";
 import Unauthorized from "./errors/401";
-import RequireAuth from './components/RequireAuth';
-
-const ROLES = {
-  'User': 2001,
-  'Editor': 1984,
-  'Admin': 5150
-}
+import ProtectedRoute from './components/ProtectedRoute';
+import { ROLES } from './scripts/Validation';
 
 function App() {
 
@@ -68,17 +62,9 @@ function App() {
         <Route path="board" element={<Board />} />
 
         {/* we want to protect these routes */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path="user" element={<User />} />
-        </Route>
-
-        <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
-          <Route path="editor" element={<Editor />} />
-        </Route>
-
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="admin" element={<Admin />} />
-        </Route>
+        <Route path="/user" element={<ProtectedRoute roles={[ROLES.User]} Component={User} />} />
+        <Route path="/editor" element={<ProtectedRoute roles={[ROLES.Editor]} Component={Editor} />} />
+        <Route path="/admin" element={<ProtectedRoute roles={[ROLES.Admin]} Component={Admin} />} />
 
         {/* catch all */}
         <Route path="*" element={<NotFound />} />

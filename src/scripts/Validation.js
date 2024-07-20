@@ -4,3 +4,5 @@ export const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 export const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 // REGEX for Email (name@server.domain)
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// CLient Roles list
+export const ROLES = { 'User': 2001, 'Editor': 1984, 'Admin': 5150 };
